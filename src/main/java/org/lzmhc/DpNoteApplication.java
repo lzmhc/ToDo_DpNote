@@ -9,9 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class DpNoteApplication {
+
     public static void main(String[] args) {
         // 菜单显示在标题栏
         if ( SystemInfo.isLinux ) {
@@ -19,6 +22,7 @@ public class DpNoteApplication {
             JDialog.setDefaultLookAndFeelDecorated( true );
         }
         FlatSolarizedDarkIJTheme.setup();
+        System.setProperty("flatlaf.useWindowDecorations", "true");
         System.setProperty("java.awt.headless", "false");
         SpringApplication.run(DpNoteApplication.class,args);
     }

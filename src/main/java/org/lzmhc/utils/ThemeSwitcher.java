@@ -3,8 +3,18 @@ package org.lzmhc.utils;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ThemeSwitcher {
+    public static ArrayList<String> menuItems = new ArrayList<>(Arrays.asList("FlatSolarizedDarkIJTheme",
+            "FlatXcodeDarkIJTheme", "FlatArcDarkOrangeIJTheme",
+            "FlatSpacegrayIJTheme", "FlatDarkFlatIJTheme",
+            "FlatGradiantoDarkFuchsiaIJTheme",
+            "FlatGradiantoNatureGreenIJTheme",
+            "FlatGrayIJTheme",
+            "FlatHighContrastIJTheme",
+            "FlatMaterialDesignDarkIJTheme"));
     /**
      * 根据主题类名切换 FlatLaf 主题
      */
