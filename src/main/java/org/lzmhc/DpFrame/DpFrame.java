@@ -3,8 +3,6 @@ package org.lzmhc.DpFrame;
 import org.jdesktop.swingx.JXEditorPane;
 import org.lzmhc.DpMenu.DpMenuBar;
 import org.lzmhc.DpMenu.DpPopupMenu;
-import org.lzmhc.DpNoteApplication;
-import org.lzmhc.GuiLauncher;
 import org.lzmhc.utils.WindowManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,7 +16,7 @@ import java.awt.event.*;
 @Scope("prototype")
 public class DpFrame extends JFrame {
     @Autowired
-    private WindowManager toDoService;
+    private WindowManager windowManager;
     @Autowired
     private DpMenuBar menuBar;
     @Autowired
@@ -26,8 +24,6 @@ public class DpFrame extends JFrame {
     public int frameId = WindowManager.FrameNum;
     private JXEditorPane editorPane = new JXEditorPane("text/html; charset=UTF-8", "");
     public void createAndShowGUI() {
-        this.setTitle("#ToDo");
-        this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setJMenuBar(menuBar);
         // 新建窗口
@@ -36,7 +32,7 @@ public class DpFrame extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
-                        toDoService.openNewNoteWindow();
+                        windowManager.openNewNoteWindow();
                     }
                 }
             }
@@ -110,7 +106,7 @@ public class DpFrame extends JFrame {
         actionMap.put("newAction", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                toDoService.openNewNoteWindow();
+                windowManager.openNewNoteWindow();
             }
         });
         // 定义 Ctrl+Q 动作
@@ -128,7 +124,8 @@ public class DpFrame extends JFrame {
         });
         // 显示窗口
 //        this.setResizable(false);
-        this.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4)));
+        this.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/3), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4)));
+        this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         this.pack();
         setLocationToTopRight(this);
