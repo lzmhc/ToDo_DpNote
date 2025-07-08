@@ -2,22 +2,37 @@ package org.lzmhc;
 
 import jakarta.annotation.PostConstruct;
 import org.lzmhc.DpFrame.DpFrame;
+import org.lzmhc.entity.ToDo;
+import org.lzmhc.service.NoteService;
 import org.lzmhc.utils.WindowManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class GuiLauncher {
     @Autowired
-    private DpFrame frame;
+    private WindowManager windowManager;
+    @Autowired
+    private NoteService noteService;
     @PostConstruct
     public void launch() {
-        SwingUtilities.invokeLater(() -> {
-            frame.createAndShowGUI();
-            WindowManager.FrameNum++;
-            WindowManager.openFrames.add(frame);
-        });
+        List<ToDo> toDoList = noteService.findAll();
+        if(toDoList.size()>0){
+            SwingUtilities.invokeLater(() -> {
+                for(ToDo todo : toDoList){
+                    ToDo toDo = new ToDo();
+                    toDo.setContent(todo.getContent());
+                    windowManager.openNewNoteWindow(toDo);
+                }
+            });
+        }else{
+            SwingUtilities.invokeLater(() -> {
+                windowManager.openNewNoteWindow();
+            });
+        }
     }
 }

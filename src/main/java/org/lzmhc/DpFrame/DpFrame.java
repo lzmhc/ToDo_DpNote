@@ -3,6 +3,9 @@ package org.lzmhc.DpFrame;
 import org.jdesktop.swingx.JXEditorPane;
 import org.lzmhc.DpMenu.DpMenuBar;
 import org.lzmhc.DpMenu.DpPopupMenu;
+import org.lzmhc.entity.ToDo;
+import org.lzmhc.repository.NotesRepository;
+import org.lzmhc.service.NoteService;
 import org.lzmhc.utils.WindowManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,14 +18,33 @@ import java.awt.event.*;
 @Component
 @Scope("prototype")
 public class DpFrame extends JFrame {
+    private String uuid;
+    private String content;
     @Autowired
     private WindowManager windowManager;
     @Autowired
     private DpMenuBar menuBar;
     @Autowired
     private DpPopupMenu popupMenu;
-    public int frameId = WindowManager.FrameNum;
-    private JXEditorPane editorPane = new JXEditorPane("text/html; charset=UTF-8", "");
+    @Autowired
+    private NoteService noteService;
+
+    public String getUuid() {
+        return uuid;
+    }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    private JXEditorPane editorPane = new JXEditorPane("text/html; charset=UTF-8", content);
     public void createAndShowGUI() {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setJMenuBar(menuBar);
@@ -76,6 +98,24 @@ public class DpFrame extends JFrame {
                     @Override
                     public void mousePressed(MouseEvent e) {
                         editorPane.setEditable(false);
+                        String text = editorPane.getText();
+                        ToDo note = new ToDo();
+                        note.setId(uuid);
+                        note.setContent(text);
+                        noteService.save(note);
+                    }
+                }
+        );
+        popupMenu.delMenu.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        noteService.deleteNoteById(uuid);
+                        WindowManager.removeNoteWindow(DpFrame.this);
+                        DpFrame.this.dispose();
+                        if (WindowManager.FrameNum < 0) {
+                            System.exit(0);
+                        }
                     }
                 }
         );
@@ -99,6 +139,11 @@ public class DpFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 editorPane.setEditable(false);
+                String text = editorPane.getText();
+                ToDo note = new ToDo();
+                note.setId(uuid);
+                note.setContent(text);
+                noteService.save(note);
             }
         });
         // 定义 Ctrl+O 动作

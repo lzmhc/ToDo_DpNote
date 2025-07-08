@@ -8,29 +8,20 @@ import java.time.LocalDateTime;
 @Table(name = "notes")
 public class ToDo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String title;
+    private String id;
+    @Column(name = "content")
     private String content;
-    @Column(name = "create_at", columnDefinition = "TEXT DEFAULT (datetime('now','localtime'))")
+    @Column(name = "created_at", columnDefinition = "TEXT DEFAULT (datetime('now','localtime'))")
     private LocalDateTime create_at;
-    @Column(name = "update_at", columnDefinition = "TEXT DEFAULT (datetime('now','localtime'))")
+    @Column(name = "updated_at", columnDefinition = "TEXT DEFAULT (datetime('now','localtime'))")
     private LocalDateTime update_at;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getContent() {

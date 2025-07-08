@@ -3,11 +3,10 @@
 ```sql
 # todo.sqlite
 CREATE TABLE IF NOT EXISTS notes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT,
-  content TEXT NOT NULL,
-  created_at TEXT DEFAULT (datetime('now', 'localtime')),
-  updated_at TEXT DEFAULT (datetime('now', 'localtime'))
+    id TEXT PRIMARY KEY NOT NULL,
+    content TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now', 'localtime')),
+    updated_at TEXT DEFAULT (datetime('now', 'localtime'))
 );
 ```
 

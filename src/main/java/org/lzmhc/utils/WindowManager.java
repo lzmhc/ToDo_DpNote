@@ -1,6 +1,7 @@
 package org.lzmhc.utils;
 
 import org.lzmhc.DpFrame.DpFrame;
+import org.lzmhc.entity.ToDo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class WindowManager {
@@ -18,7 +20,19 @@ public class WindowManager {
     public void openNewNoteWindow() {
         SwingUtilities.invokeLater(() -> {
             DpFrame frame = context.getBean(DpFrame.class);
-//            DpFrame frame = new DpFrame();
+            String uuid = UUID.randomUUID().toString();
+            frame.setUuid(uuid);
+            frame.createAndShowGUI();
+            FrameNum+=1;
+            openFrames.add(frame);
+        });
+    }
+    public void openNewNoteWindow(ToDo toDo) {
+        SwingUtilities.invokeLater(() -> {
+            DpFrame frame = context.getBean(DpFrame.class);
+            String uuid = UUID.randomUUID().toString();
+            frame.setUuid(uuid);
+            frame.setContent(toDo.getContent());
             frame.createAndShowGUI();
             FrameNum+=1;
             openFrames.add(frame);
