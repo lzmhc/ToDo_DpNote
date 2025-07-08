@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "notes")
 public class ToDo {
     @Id
+    @Column(name = "id")
     private String id;
     @Column(name = "content")
     private String content;

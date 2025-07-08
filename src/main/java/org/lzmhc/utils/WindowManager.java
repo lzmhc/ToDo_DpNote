@@ -22,7 +22,7 @@ public class WindowManager {
             DpFrame frame = context.getBean(DpFrame.class);
             String uuid = UUID.randomUUID().toString();
             frame.setUuid(uuid);
-            frame.createAndShowGUI();
+            frame.createAndShowGUI("#ToDo");
             FrameNum+=1;
             openFrames.add(frame);
         });
@@ -30,10 +30,8 @@ public class WindowManager {
     public void openNewNoteWindow(ToDo toDo) {
         SwingUtilities.invokeLater(() -> {
             DpFrame frame = context.getBean(DpFrame.class);
-            String uuid = UUID.randomUUID().toString();
-            frame.setUuid(uuid);
-            frame.setContent(toDo.getContent());
-            frame.createAndShowGUI();
+            frame.setUuid(toDo.getId());
+            frame.createAndShowGUI(toDo.getContent());
             FrameNum+=1;
             openFrames.add(frame);
         });

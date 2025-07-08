@@ -24,9 +24,7 @@ public class GuiLauncher {
         if(toDoList.size()>0){
             SwingUtilities.invokeLater(() -> {
                 for(ToDo todo : toDoList){
-                    ToDo toDo = new ToDo();
-                    toDo.setContent(todo.getContent());
-                    windowManager.openNewNoteWindow(toDo);
+                    windowManager.openNewNoteWindow(todo);
                 }
             });
         }else{

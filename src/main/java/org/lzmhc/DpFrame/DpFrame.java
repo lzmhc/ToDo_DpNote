@@ -19,7 +19,6 @@ import java.awt.event.*;
 @Scope("prototype")
 public class DpFrame extends JFrame {
     private String uuid;
-    private String content;
     @Autowired
     private WindowManager windowManager;
     @Autowired
@@ -35,17 +34,9 @@ public class DpFrame extends JFrame {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    private JXEditorPane editorPane = new JXEditorPane("text/html; charset=UTF-8", content);
-    public void createAndShowGUI() {
+    private JXEditorPane editorPane = new JXEditorPane("text/html; charset=UTF-8", "");
+    public void createAndShowGUI(String content) {
+        editorPane.setText(content);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setJMenuBar(menuBar);
         // 新建窗口

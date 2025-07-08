@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NotesRepository extends CrudRepository<ToDo,Long> {
+public interface NotesRepository extends CrudRepository<ToDo,String> {
     /**
      * 查询所有数据
      */
