@@ -20,4 +20,4 @@
 
 ## 🖼️ 截图预览
 
-![](/home/mhc/Documents/DpNote/todo.png)
+![](./todo.png)
