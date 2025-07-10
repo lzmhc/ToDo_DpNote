@@ -26,30 +26,6 @@ public class GuiLauncher {
     private NoteService noteService;
     @PostConstruct
     public void launch() {
-        // 初始化数据库文件
-//        String userHome = System.getProperty("user.home");
-//        Path targetDbPath = Paths.get(userHome, ".todo", "todo.sqlite");
-//        if (Files.notExists(targetDbPath.getParent())) {
-//            try{
-//                Files.createDirectories(targetDbPath.getParent());
-//            }catch (Exception e){
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//        if (Files.notExists(targetDbPath)) {
-//            ClassPathResource resource = new ClassPathResource("todo.sqlite");
-//            if (resource.exists()) {
-//                try{
-//                    Files.copy(resource.getInputStream(), targetDbPath, StandardCopyOption.REPLACE_EXISTING);
-//                    System.out.println("初始化数据库文件已复制到: " + targetDbPath.toAbsolutePath());
-//                }catch (Exception e){
-//                    System.out.println(e.getMessage());
-//                }
-//            } else {
-//                throw new RuntimeException("未找到资源文件: todo.sqlite");
-//            }
-//        }
-        //主程序运行
         List<ToDo> toDoList = noteService.findAll();
         if(toDoList.size()>0){
             SwingUtilities.invokeLater(() -> {
