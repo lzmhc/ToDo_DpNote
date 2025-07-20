@@ -6,15 +6,19 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * 主题切换工具
+ */
 public class ThemeSwitcher {
-    public static ArrayList<String> menuItems = new ArrayList<>(Arrays.asList("FlatSolarizedDarkIJTheme",
-            "FlatXcodeDarkIJTheme", "FlatArcDarkOrangeIJTheme",
-            "FlatSpacegrayIJTheme", "FlatDarkFlatIJTheme",
-            "FlatGradiantoDarkFuchsiaIJTheme",
-            "FlatGradiantoNatureGreenIJTheme",
-            "FlatGrayIJTheme",
-            "FlatHighContrastIJTheme",
-            "FlatMaterialDesignDarkIJTheme"));
+    public static ArrayList<String> menuItems = new ArrayList<>(
+            Arrays.asList("FlatSolarizedDarkIJTheme",
+                        "FlatXcodeDarkIJTheme", "FlatArcDarkOrangeIJTheme",
+                        "FlatSpacegrayIJTheme", "FlatDarkFlatIJTheme",
+                        "FlatGradiantoDarkFuchsiaIJTheme",
+                        "FlatGradiantoNatureGreenIJTheme",
+                        "FlatGrayIJTheme",
+                        "FlatHighContrastIJTheme",
+                        "FlatMaterialDesignDarkIJTheme"));
     /**
      * 根据主题类名切换 FlatLaf 主题
      */
@@ -34,7 +38,7 @@ public class ThemeSwitcher {
         }
     }
     /**
-     * 更新所有组件的 UI（可选）
+     * 更新所有组件的 UI
      */
     public static void updateComponentTree(Component component) {
         SwingUtilities.updateComponentTreeUI(component);

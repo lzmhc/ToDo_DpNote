@@ -1,7 +1,8 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:${user.dir}/todo.sqlite
+    url: jdbc:sqlite:/home/mhc/Documents/DpNote/src/main/resources/todo.sqlite
+#    url: jdbc:sqlite:${XDG_DATA_HOME}/todo.sqlite
   jpa:
     show-sql: true
     database-platform: org.hibernate.community.dialect.SQLiteDialect

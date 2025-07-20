@@ -1,10 +1,8 @@
 package org.lzmhc.DpFrame;
 
 import org.jdesktop.swingx.JXEditorPane;
-import org.lzmhc.DpMenu.DpMenuBar;
-import org.lzmhc.DpMenu.DpPopupMenu;
+import org.lzmhc.DpMenu.MenuBarFactory;
 import org.lzmhc.entity.ToDo;
-import org.lzmhc.repository.NotesRepository;
 import org.lzmhc.service.NoteService;
 import org.lzmhc.utils.WindowManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,45 +18,32 @@ import java.awt.event.*;
 public class DpFrame extends JFrame {
     private String uuid;
     @Autowired
+    private MenuBarFactory menuBarFactory;
+    @Autowired
     private WindowManager windowManager;
     @Autowired
-    private DpMenuBar menuBar;
-    @Autowired
-    private DpPopupMenu popupMenu;
-    @Autowired
     private NoteService noteService;
-
     public String getUuid() {
         return uuid;
     }
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    public NoteService getNoteService() {
+        return noteService;
+    }
+
     private JXEditorPane editorPane = new JXEditorPane("text/html; charset=UTF-8", "");
+
+    public JXEditorPane getEditorPane() {
+        return editorPane;
+    }
+
     public void createAndShowGUI(String content) {
         editorPane.setText(content);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setJMenuBar(menuBar);
-        // 新建窗口
-        menuBar.addMenu.addMouseListener(
-            new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        windowManager.openNewNoteWindow();
-                    }
-                }
-            }
-        );
-        // 编辑
-        menuBar.editMenu.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        editorPane.setEditable(true);
-                    }
-                }
-        );
+        this.setJMenuBar(menuBarFactory.createMenuBar(this));
         editorPane.setEditable(false);
         // 右键菜单
         editorPane.addMouseListener(new MouseAdapter() {
@@ -72,45 +57,12 @@ public class DpFrame extends JFrame {
             }
             private void maybeShowPopup(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    menuBarFactory.createPopupMenu(DpFrame.this).show(e.getComponent(), e.getX(), e.getY());
                 }
             }
         });
-        popupMenu.editMenu.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        editorPane.setEditable(true);
-                    }
-                }
-        );
-        popupMenu.saveMenu.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        editorPane.setEditable(false);
-                        String text = editorPane.getText();
-                        ToDo note = new ToDo();
-                        note.setId(uuid);
-                        note.setContent(text);
-                        noteService.save(note);
-                    }
-                }
-        );
-        popupMenu.delMenu.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        noteService.deleteNoteById(uuid);
-                        WindowManager.removeNoteWindow(DpFrame.this);
-                        DpFrame.this.dispose();
-                        if (WindowManager.FrameNum < 0) {
-                            System.exit(0);
-                        }
-                    }
-                }
-        );
         this.add(editorPane);
+
         // 获取 InputMap 和 ActionMap
         InputMap inputMap = this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getRootPane().getActionMap();
@@ -159,30 +111,13 @@ public class DpFrame extends JFrame {
             }
         });
         // 显示窗口
-//        this.setResizable(false);
+        this.setResizable(false);
         this.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/3), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4)));
-        this.setUndecorated(true);
+        //去掉最小化/最大化/关闭按钮
         this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         this.pack();
-        setLocationToTopRight(this);
+        WindowManager.setLocationToTopRight(this);
         this.setVisible(true);
     }
-    public static void setLocationToTopRight(Window window) {
-        Dimension windowSize = window.getSize(); // 窗口大小（建议设置固定值）
-        int frameWidth = (int) windowSize.getWidth();
-        int frameHeight = (int) windowSize.getHeight();
-        // 获取屏幕尺寸
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = (int) screenSize.getWidth();
-        int screenHeight = (int) screenSize.getHeight();
-        int index = WindowManager.FrameNum;
-        int maxPerColumn = screenHeight / frameHeight;
-        int col = index / maxPerColumn;
-        int row = index % maxPerColumn;
-        int columnGroup = col / 1;
-        int x;
-        x = screenWidth - (columnGroup + 1) * frameWidth - (columnGroup + 1);
-        int y = row * frameHeight;
-        window.setLocation(x, y);
-    }
+
 }
